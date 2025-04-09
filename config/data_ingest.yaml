@@ -1,0 +1,15 @@
+
+
+email_dir: ./data/emails
+price_lists_dir: ./data/price_lists
+output_dir: ./data/extracted_data
+
+embedder_model: text-embedding-3-small
+chroma_persist_dir: ./data/embeddings
+chroma_collection_name: product_embeddings
+price_list_path: ./data/price_lists/sample_price_list.csv
+
+
+defaults:
+  - _self_
+  - email_extractor_prompts
