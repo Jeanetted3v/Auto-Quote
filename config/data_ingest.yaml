@@ -9,7 +9,8 @@ chroma_persist_dir: ./data/embeddings
 chroma_collection_name: product_embeddings
 price_list_path: ./data/price_lists/sample_price_list.csv
 
-llm_model: "deepseek:deepseek-chat"
+# https://ai.pydantic.dev/api/models/base/#pydantic_ai.models.KnownModelName
+llm_model: "gpt-4o"
 # "gpt-4o"
 # "deepseek:deepseek-chat"
 email_parser_enabled: false

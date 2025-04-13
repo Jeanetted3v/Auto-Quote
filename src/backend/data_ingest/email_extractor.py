@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 class ProductItem(BaseModel):
     name: Optional[str] = None
-    code: Optional[str] = None
+    impa_code: Optional[str] = None
     quantity: Optional[int] = None
     unit: Optional[str] = None
 
@@ -61,15 +61,15 @@ class EmailExtractor:
             except Exception as e:
                 raise Exception(f"Error preparing PDF for image processing: {str(e)}")
     
-    def pdf_to_jpeg(self, pdf_path: str) -> List[str]:
+    def pdf_to_jpeg(self, pdf_path: str, dpi: int=300) -> List[str]:
         """Converts a PDF file to a series of JPEG images, one per page."""
         temp_dir = tempfile.mkdtemp()
-        images = convert_from_path(pdf_path, dpi=100)
+        images = convert_from_path(pdf_path, dpi=dpi)
         
         jpeg_paths = []
         for i, image in enumerate(images):
             jpeg_path = os.path.join(temp_dir, f"page_{i+1}.jpg")
-            image.save(jpeg_path, "JPEG", quality=50)
+            image.save(jpeg_path, "JPEG", quality=100)
             jpeg_paths.append(jpeg_path)
         return jpeg_paths
 
@@ -123,24 +123,20 @@ class EmailExtractor:
             result = await self.agent.run(text_content)
             return result.data if hasattr(result, 'data') else result
         
-        # Convert PDF to JPEGs
         jpeg_paths = self.pdf_to_jpeg(pdf_path)
         all_text = ""
     
         for i, jpeg_path in enumerate(jpeg_paths):
             try:
-                # Read image
                 img = cv2.imread(jpeg_path)
-                
                 # Preprocess image for better OCR results
                 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
                 gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-                
                 # Apply OCR
-                page_text = pytesseract.image_to_string(gray)
-                
+                page_text = pytesseract.image_to_string(gray, lang='chi_sim+chi_tra+eng')
                 # Add page number for context
                 all_text += f"\n\n--- PAGE {i+1} ---\n\n{page_text}"
+                logger.info(f"Extracted text from page {i+1}: {page_text}")
                 
                 logger.info(f"OCR completed for page {i+1} of {len(jpeg_paths)}")
             except Exception as e:
