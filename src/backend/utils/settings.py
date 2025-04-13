@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     }
     CONFIG_DIR: str = "../../config"
     OPENAI_API_KEY: str
+    GROQ_API_KEY: str
+    DEEPSEEK_API_KEY: str
 
     
 

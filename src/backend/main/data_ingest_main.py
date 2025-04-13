@@ -15,9 +15,7 @@ logger.info("Setting up logging configuration.")
 setup_logging()
 
 async def batch_extract(cfg: DictConfig) -> None:
-    extractor = EmailExtractor(
-        system_prompt=cfg.email_extractor_prompts.system_prompt
-    )
+    extractor = EmailExtractor(cfg)
     batch_results = await extractor.batch_extract(cfg.email_dir, cfg.output_dir)
     logger.info(f"Processed {len(batch_results)} files")
 
@@ -45,8 +43,8 @@ def create_embedding(cfg: DictConfig) -> None:
 def main(cfg: DictConfig) -> None:
     """Main entry point to load, chunk, embed documents."""
     logger.info("Starting the data ingestion process.")
-    # asyncio.run(batch_extract(cfg))
-    create_embedding(cfg)
+    asyncio.run(batch_extract(cfg))
+    # create_embedding(cfg)
     logger.info("Data ingestion process completed successfully.")
 
 

@@ -34,5 +34,21 @@ email_extractor_prompts:
     If information is not available, use null for optional fields.
     Be thorough and extract ALL products mentioned in the document.
   user_prompt: |
-    Please extract the required information from the following text:
-    {text}
+    Extract the following information from this PDF document text:
+
+        1. Sender's email address
+        2. Sender's company name
+        3. For each product mentioned in the quotation request:
+        - Product name
+        - Product code (if available)
+        - Quantity (if available)
+        - Unit of measurement (e.g., pieces, kg, liters, etc.) (if available)
+
+        If information is not available, use null for optional fields.
+        Be thorough and extract ALL products mentioned in the document.
+        Extract the relevant information of both Enlish and Chinese languages.
+
+        IMPORTANT: Return ONLY the JSON with no additional explanation or formatting.
+
+        Document text:
+        {text}

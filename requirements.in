@@ -13,6 +13,11 @@ pydantic
 pydantic-settings
 pydantic-ai==0.0.52
 pydantic-ai[logfire]
-PyPDF2
+pypdf
 chromadb
 numpy
+pdf2image
+pybase64
+pytesseract
+pillow
+opencv-python
