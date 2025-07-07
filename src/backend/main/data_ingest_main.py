@@ -6,8 +6,8 @@ import hydra
 import asyncio
 from omegaconf import DictConfig
 from src.backend.utils.logging import setup_logging
-from src.backend.data_ingest.email_extractor import EmailExtractor
-from src.backend.data_ingest.embedder import Embedder
+from src.backend.pipelines.extractor import Extractor
+from src.backend.pipelines.embedder import Embedder
 from src.backend.utils.settings import SETTINGS
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ logger.info("Setting up logging configuration.")
 setup_logging()
 
 async def batch_extract(cfg: DictConfig) -> None:
-    extractor = EmailExtractor(cfg)
+    extractor = Extractor(cfg)
     batch_results = await extractor.batch_extract(cfg.email_dir, cfg.output_dir)
     logger.info(f"Processed {len(batch_results)} files")
 

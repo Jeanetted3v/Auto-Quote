@@ -1,6 +1,6 @@
 
 
-email_dir: ./data/emails
+email_dir: ./data/syndata
 price_lists_dir: ./data/price_lists
 output_dir: ./data/extracted_data
 
@@ -9,12 +9,9 @@ chroma_persist_dir: ./data/embeddings
 chroma_collection_name: product_embeddings
 price_list_path: ./data/price_lists/sample_price_list.csv
 
-# https://ai.pydantic.dev/api/models/base/#pydantic_ai.models.KnownModelName
-llm_model: "gpt-4o"
-# "gpt-4o"
-# "deepseek:deepseek-chat"
-email_parser_enabled: false
-
+llm_model: openai/gpt-4.1-mini
+# 'openai/gpt-4.1-mini' $0.01
+# 'google/gemini-2.5-pro' $0.03
 defaults:
   - _self_
-  - email_extractor_prompts
+  - extractor_agent_prompts

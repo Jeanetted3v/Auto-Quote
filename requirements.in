@@ -1,3 +1,4 @@
+ipykernel
 openai
 python-dotenv
 pandas
@@ -11,9 +12,10 @@ pymongo
 chromadb
 pydantic
 pydantic-settings
-pydantic-ai==0.0.52
+pydantic-ai>=0.3.0
 pydantic-ai[logfire]
 pypdf
+weaviate-client
 chromadb
 numpy
 pdf2image
@@ -21,3 +23,4 @@ pybase64
 pytesseract
 pillow
 opencv-python
+streamlit
