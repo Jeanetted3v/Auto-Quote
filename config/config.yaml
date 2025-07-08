@@ -1,0 +1,22 @@
+email_dir: ./data/syndata
+price_lists_dir: ./data/price_lists
+output_dir: ./data/extracted_data
+
+# Embedder class configuration
+embedder_model: text-embedding-3-small
+chroma_persist_dir: ./data/embeddings
+chroma_collection_name: product_embeddings
+price_list_path: ./data/price_lists/sample_price_list.csv
+
+# Quote generation class configuration
+n_results: 3
+
+# OpenRouter models: https://openrouter.ai/models
+llm_model: openai/gpt-4.1-mini
+# 'openai/gpt-4.1-mini' $0.01
+# 'google/gemini-2.5-pro' $0.03
+
+
+defaults:
+  - _self_
+  - extractor_agent_prompts
