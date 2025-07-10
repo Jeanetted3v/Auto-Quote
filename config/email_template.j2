@@ -1,0 +1,20 @@
+Dear {{ recipient_name }},
+
+Please find below our quotation for your RFQ: **{{ rfq_filename }}**.
+
+---
+
+**Quotation:**
+
+| Item | Product Name                       | Qty | Unit | Price (each) | Total   |
+|------|------------------------------------|-----|------|---------------|---------|
+{% for row in quote_rows %}
+| {{ loop.index }} | {{ row['Products Name'] }} | {{ row['requested_qty'] }} | {{ row['requested_unit'] }} | ${{ row['STOCK PRICE'] }} | ${{ row['total'] }} |
+{% endfor %}
+
+---
+
+If you have any questions, feel free to reach out.
+
+Best regards,  
+Jeanette's shipping Pte. Ltd.
