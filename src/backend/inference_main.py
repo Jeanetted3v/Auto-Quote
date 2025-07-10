@@ -29,9 +29,9 @@ async def batch_extract(cfg: DictConfig) -> None:
     config_name="config")
 def main(cfg: DictConfig) -> None:
     """Main entry point to load, chunk, embed documents."""
-    logger.info("Starting the extraction from email.")
-    asyncio.run(batch_extract(cfg))
-    logger.info("Extraction completed successfully.")
+    # logger.info("Starting the extraction from email.")
+    # asyncio.run(batch_extract(cfg))
+    # logger.info("Extraction completed successfully.")
 
     logger.info("Start matching process")
     embedder = Embedder(
@@ -41,6 +41,7 @@ def main(cfg: DictConfig) -> None:
         persist_dir=cfg.chroma_persist_dir
     )
     quote_gen = QuoteGenerator(cfg, embedder)
+    
     
 
 
