@@ -1,6 +1,8 @@
-import json
+import logging
 import pandas as pd
 from typing import Dict, Any, List
+
+logger = logging.getLogger(__name__)
 
 class QuoteGenerator:
     """A class to generate quotes based on price list embeddings."""
@@ -9,7 +11,7 @@ class QuoteGenerator:
         self.cfg = cfg
         self.embedder = embedder
 
-    def _match_product(
+    def match_product(
         self,
         item: Dict[str, Any],
         price_df: pd.DataFrame,
@@ -29,7 +31,7 @@ class QuoteGenerator:
                         match = matched.iloc[0].to_dict() # returning the entire row
                         match["requested_name"] = rfq_product_name
                         match["requested_impa_code"] = rfq_impa_code
-                        match["matched_via"] = "impa"
+                        match["matched_via"] = "impa code"
                         return match
 
         # 2. Fallback: semantic match by name
@@ -37,10 +39,12 @@ class QuoteGenerator:
             rfq_product_name,
             n_results=self.cfg.n_results
         )
-        if results and results["metadatas"]:
-            top_match = results["metadatas"][0]
-            top_match["match_confidence"] = int((1 - results["distances"][0]) * 100)  # convert to confidence in percentage
-            top_match["match_distance"] = round(results["distances"][0], 4)        # raw distance
+        logger.info(f"Semantic search results for '{rfq_product_name}': {results}")
+        if results and results["metadatas"] and results["distances"]:
+            top_match = results["metadatas"][0][0]       # ✅ top-1 metadata
+            distance = results["distances"][0][0]        # ✅ top-1 distance
+            top_match["match_confidence"] = int((1 - distance) * 100)
+            top_match["match_distance"] = round(distance, 4)
             top_match["matched_via"] = "semantic"
             return top_match
 
@@ -56,13 +60,11 @@ class QuoteGenerator:
         query: str,
         top_k: int = 3
     ) -> List[Dict[str, Any]]:
-        """
-        Return top-k product match candidates for a given product name using semantic search.
-        """
+        """Return top-k product match candidates for a given product name using semantic search."""
         results = self.embedder.query_similar(query, n_results=top_k)
         candidates = []
 
-        for metadata, distance in zip(results["metadatas"], results["distances"]):
+        for metadata, distance in zip(results["metadatas"][0], results["distances"][0]):
             candidates.append({
                 **metadata,
                 "match_confidence": int((1 - distance) * 100),
@@ -72,7 +74,7 @@ class QuoteGenerator:
 
         return candidates
     
-    def _enrich_match_with_request_context(
+    def enrich_match_with_request_context(
         self,
         match: Dict[str, Any],
         item: Dict[str, Any]
@@ -95,11 +97,3 @@ class QuoteGenerator:
             enriched = self._enrich_match_with_request_context(match, item)
             matched_items.append(enriched)
         return matched_items
-
-
-    def generate_quote(self, prompt):
-        """Entry point to match products and generate quotes."""
-        price_df = pd.read_csv("sample_price_list.csv")
-        impa_columns = [col for col in price_df.columns if "IMPA" in col.upper()]
-        for item in rfq_data["products"]:
-        match = quote_gen.match_product(item, price_df, embedder, impa_columns)
