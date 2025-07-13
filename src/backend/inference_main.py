@@ -1,5 +1,8 @@
-"""This is the main script to extract product items from RFQ emails,
-Convert items into embeddings,  
+"""This is the main entry point to run inference without UI:
+- Extract product items from RFQ emails
+- Convert items into embeddings
+- Match them against items the database
+- Genearte quotes based on the matched items
 To run:
 python -m src.backend.main.inference_main
 """

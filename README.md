@@ -1,5 +1,5 @@
 # Auto Quotation System
-A proof-of-concept (POC) for automating quotation generation process, starting with extracting inquiry, matching with items in price list, finally generating quotation. 
+A proof-of-concept (POC) for automating quotation generation process, starting with extracting inquiry, matching with items in price list, and finally generating quotation. 
 
 ## Quick Set-up
 1. Create a new environment and activate it:
@@ -13,7 +13,7 @@ conda activate autoquote
 pip install -r requirements.txt
 ```
 
-3. Run the application:
+3. Run the application with UI:
 ```bash
 PYTHONPATH=. streamlit run app.py
 ```
