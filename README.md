@@ -4,8 +4,8 @@ A proof-of-concept (POC) for automating quotation generation process, starting w
 ## Quick Set-up
 1. Create a new environment and activate it:
 ```bash
-conda create -n autoquote python=3.12
-conda activate autoquote
+conda create -n quote python=3.12
+conda activate quote
 ```
 
 2. Install the packages:
